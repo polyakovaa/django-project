@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Добро пожаловать в клуб путешествий!</h1>
+<p><a  href="{% url 'events' %}">Мероприятия</a></p>      
+<p><a  href="{% url 'event_types' %}">Типы мероприятий</a></p>
+{% endblock content %}

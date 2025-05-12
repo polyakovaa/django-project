@@ -11,7 +11,7 @@ class User(models.Model):
     user_type = models.CharField(max_length=20, choices=types, default='participant',verbose_name="Роль")
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Номер")
     email = models.EmailField(blank=True, null=True, verbose_name="Почта")
-    
+    card = models.OneToOneField('ClubCard', on_delete=models.CASCADE,verbose_name="Клубная карта", blank=True, null=True)
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
 
@@ -42,7 +42,7 @@ class Event(models.Model):
     difficulty = models.CharField(max_length=20, choices=levels, verbose_name="Сложность")
     price = models.DecimalField(max_digits=10, decimal_places=2,verbose_name="Стоимость")
     comment = models.TextField(blank=True, null=True,verbose_name="Описание")
-    participants = models.ManyToManyField(User, through='EventParticipation')
+    participants = models.ManyToManyField(User, through='EventParticipation', verbose_name="Участники мероприятия")
     
     class Meta:
         verbose_name = "Мероприятие"
@@ -64,12 +64,16 @@ class RouteTrack(models.Model):
         return f"{self.event.name} - {self.name}"
 
 class EventParticipation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Участник")
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Мерояприятие")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Имя")
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name="Мероприятие")
     is_organizer = models.BooleanField(default=False, verbose_name="Организатор")
     
     class Meta:
         unique_together = ('user', 'event')
+        verbose_name = "Участие в мероприятиях"
+        verbose_name_plural = "Участие в мероприятиях"
+    def __str__(self):
+        return "Организатор" if self.is_organizer else "Участник"
 
 class ClubCard(models.Model):
     card_states = (
@@ -80,7 +84,7 @@ class ClubCard(models.Model):
     
     number = models.CharField(max_length=50, unique=True,verbose_name="Номер")
     state = models.CharField(max_length=20, choices=card_states,verbose_name="Состояние")
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Владелец")
+    owner = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Владелец")
     price = models.DecimalField(max_digits=10, decimal_places=2,verbose_name="Стоимость")
     sale_date = models.DateField(blank=True, null=True,verbose_name="Дата продажи")
     hidden_location = models.CharField(blank=True, null=True,verbose_name="Место")

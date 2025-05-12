@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Мероприятия типа "{{ event_type }}"</h1>
+<p>
+    <a href="{% url 'events' %}">Все мероприятия</a> |
+    <a href="{% url 'event_types' %}">Типы мероприятий</a>
+</p>
+
+{% for event in events %}
+<div style="margin-bottom: 15px; padding: 8px; background: #daf1f2;">
+    <h3>{{ event.name }}</h3>
+    <p>Дата: {{ event.planned_date|date:"d.m.Y" }}</p>
+    <p>Участников: {{ event.participants_count }}</p>
+</div>
+{% endfor %}
+{% endblock %}

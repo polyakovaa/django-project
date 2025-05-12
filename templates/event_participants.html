@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Участники мероприятия "{{ event.name }}"</h1>
+<p><a href="{% url 'events' %}">← Назад к мероприятиям</a></p>
+
+<ul>
+    {% for p in participants %}
+    <li>
+        {{ p.user.last_name }} {{ p.user.first_name }}
+        ({{ p.is_organizer|yesno:"Организатор,Участник" }})
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

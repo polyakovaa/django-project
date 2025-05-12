@@ -4,18 +4,22 @@ from django.contrib import admin
 
 from .models import User, Event, RouteTrack, EventParticipation, ClubCard
 
+class EventParticipationInline(admin.TabularInline):
+    model = EventParticipation
 
+class ClubCardInline(admin.TabularInline):
+    model = ClubCard
 
 class UserModelAdmin(admin.ModelAdmin):
     list_filter=['first_name', 'last_name','user_type']
     search_fields=['first_name', 'last_name','user_type','phone','email']
-    list_display = ['first_name', 'last_name', 'user_type', 'email']
+    list_display = ['first_name', 'last_name', 'user_type', 'email', 'card__number']
+    inlines = [EventParticipationInline, ClubCardInline]
     class Meta:
         model = User
 
-class EventParticipationInline(admin.TabularInline):
-    model = EventParticipation
-    
+
+
 class EventModelAdmin(admin.ModelAdmin):
     list_filter=['event_type','status','difficulty','price']
     search_fields=['event_type','name']

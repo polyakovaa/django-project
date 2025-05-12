@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Типы мероприятий</h1>
+<p><a href="{% url 'home' %}">← Назад</a></p>
+
+<ul>
+    {% for type in types %}
+    <li style="margin: 5px 0;">
+        <a href="{% url 'events_by_type' type %}">
+            {{ type }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{title}}</h1>
+        <p>
+            {% for event in event_list %}
+            <div style="margin-bottom: 15px; padding: 8px; background: #daf1f2;">
+                <h2><a href="{% url 'detail' event.id %}">{{event.name}}</a></h2>
+                <p><a href="{% url 'events_by_type' event.event_type %}">{{event.event_type}}</a></p>
+                <p> Планируемая дата: <a href="{% url 'events_by_date' event.planned_date|date:'Y-m-d' %}">
+                    {{ event.planned_date|date:"d.m.Y" }}
+                </a></p>
+                <p>Количество <a href="{% url 'event_participants' event.id %}">участников</a>: {{ event.participants_count }}</p>
+            </div>
+            {% endfor %}
+        </p>
+
+        <p><a href="{% url 'home' %}">← Назад</a></p>
+{% endblock content %}
